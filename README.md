@@ -48,10 +48,10 @@ METHOD | ENDPOINT         | TOKEN | DESCRIPTION                   | PARAMS      
 GET    | /stores          | YES   | Finds stores                   | query: search string            | list of matching ids, name, and location (stock if admin/manager)
 GET    | /stores/:storeid/stock  | YES  | Finds stock in a store         | storeid                   | list of all products available in that store
 GET    | /stores/:storeid/best-sellers | YES   | Finds best selling products in a store  | storeid            | list of names, size and colour
-GET    | /stores/:storeid/staff  | YES  | Finds stock in a store         | storeid                   | list of all products available in that store
-POST   | /stores        | YES   | Creates file for new store (only admins)  | name, location         | object with new store
+GET    | /stores/:storeid/staff  | YES  | Finds staff in a store         | storeid                    | list of all staff in that store
+POST   | /stores         | YES   | Creates file for new store (only admins)  | name, location         | object with new store
 PUT    | /stores/:storeid   | YES   | Updates store name or location (only admins)  | storeid        | store object
-
+PUT    | /stores/:storeid/stock | YES | Updates stock in a store (only admins/managers)| name, price, size, or colour | list of all products available in that store
 DELETE | /stores/:storeid   | YES   | Deletes a store (only admins)  | storeid                      | object with deleted store
 
 
