@@ -50,7 +50,7 @@ GET    | /stores/:storeid/stock  | YES  |   ALL   | Finds stock in a store      
 GET    | /stores/:storeid/best-sellers | YES   |   ADMIN / MANAGER   | Finds best selling products in a store  | -           | list of names, size and colour
 GET    | /stores/:storeid/staff  | YES  |   ADMIN / MANAGER   | Finds staff in a store         | -                   | list of all staff in that store
 POST   | /stores                | YES   |   ADMIN   | Creates file for new store               | name, location         | object with new store
-PUT    | /stores/:storeid       | YES   |   ADMIN   | Updates store name or location           | -       | store object
+PUT    | /stores/:storeid       | YES   |   ADMIN   | Updates store name or location           | name, location         | store object
 PUT    | /stores/:storeid/stock | YES   |   ADMIN / MANAGER   | Updates stock in a store      | name, price, size, or colour | list of all products available in that store
 DELETE | /stores/:storeid       | YES   |   ADMIN        | Deletes a store                    | -                             | object with deleted store
 
