@@ -23,7 +23,6 @@ const cors = require("cors")
                 .use(cors())
                 .use(morgan('combined'))
                 .use(express.json())
-                .use('/api', require('./src/routers'))
                 .use('/api', apiRouter)
 
             const PORT = process.env.PORT || 3000
