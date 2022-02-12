@@ -26,6 +26,8 @@ const createUser = async (req, res) => {
     }
 }
 
+
+
 function getAllUsers(req, res) {
     userModel.find().then(response => res.json(response)).catch((err) => handleError(err, res))
 }
