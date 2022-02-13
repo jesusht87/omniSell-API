@@ -48,10 +48,11 @@ const login = async (req, res) => {
 }
 
 const check = async (req, res) => {
-    if (!req.headers.token) {
-        return res.status(403).json({ error: 'No Token Found' })
-    }
+  
+    if(!req.headers.token) return res.status(403).json({error : 'No Token Found'})
+  
     return res.send('User logged in')
+  
 }
 
 module.exports = {
