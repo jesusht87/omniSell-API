@@ -2,60 +2,65 @@ const storeModel = require('../models/stores.model')
 
 const createStore = async (req, res) => {
     try {
-        const store = await storeModel.create(
-            {
-                name: req.body.name,
-                location: req.body.location
-                // stock: [
-                //     {
-                //         product: req.body.stock.product,
-                //         amount: req.body.stock.amount
-                //     }
-                // ],
-                // bestSellers: [
-                //     {
-                //         product: req.body.stock.product,
-                //         amount: req.body.stock.amount
-                //     }
-                // ],
-
-            }
-        )
-
+        const store = await storeModel.create({
+            name: req.body.name,
+            location: req.body.location,
+            stock: req.body.stock,
+            bestSellers: req.body.bestSellers
+        })
         res.json({
             name: store.name,
             location: store.location
         })
 
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json(error)
     }
 }
 
-function getAllStores(req, res) {
-    storeModel.find().then(response => res.json(response)).catch((err) => handleError(err, res))
+const getAllStores = async (req, res) => {
+    try {
+        const stores = await storeModel.find()
+        res.json(stores)
+    } catch (error) {
+        res.status(500).json(error)
+    }
 }
 
-function getStoreById(req, res) {
-    storeModel.find({ _id: req.params.id }).then(response => res.json(response)).catch((err) => handleError(err, res))
-}
-
-function updateStore(req, res) {
-    storeModel
-        .findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true
+const getStoreById = async (req, res) => {
+    try {
+        const store = await storeModel.find({
+            _id: req.params.id
         })
-        .then(response => res.json(response))
-        .catch((err) => handleError(err, res))
+        res.json(store)
+    } catch (error) {
+        res.status(500).json(error)
+    }
 }
 
-function deleteStoreById(req, res) {
-    storeDeleted = req.params.id
-    storeModel
-        .remove({ _id: req.params.id })
-        .then(response => res.json('The Store with ID ' + storeDeleted + ' has been deleted.'))
-        .catch(err => handleError(err, res))
+const updateStore = async (req, res) => {
+    try {
+        const store = await storeModel
+            .findByIdAndUpdate(req.params.id, req.body, {
+                new: true,
+                runValidators: true
+            })
+        res.json(store)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+const deleteStoreById = async (req, res) => {
+    try {
+        storeDeleted = req.params.id
+        await storeModel.remove({
+            _id: req.params.id
+        })
+        res.json('The Store with ID ' + storeDeleted + ' has been deleted.')
+    } catch (error) {
+        res.status(500).json(error)
+    }
 }
 
 module.exports = {

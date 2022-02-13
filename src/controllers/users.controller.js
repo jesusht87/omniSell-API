@@ -5,16 +5,14 @@ const bcrypt = require('bcrypt')
 const createUser = async (req, res) => {
     try {
         const hashed_pwd = bcrypt.hashSync(req.body.password, 10)
-        const user = await userModel.create(
-            {
-                name: req.body.name,
-                surname: req.body.surname,
-                email: req.body.email,
-                password: hashed_pwd,
-                store: req.body.store,
-                role: req.body.role
-            }
-        )
+        const user = await userModel.create({
+            name: req.body.name,
+            surname: req.body.surname,
+            email: req.body.email,
+            password: hashed_pwd,
+            store: req.body.store,
+            role: req.body.role
+        })
 
         res.json({
             name: user.name,
@@ -27,33 +25,53 @@ const createUser = async (req, res) => {
 }
 
 
-
-function getAllUsers(req, res) {
-    userModel.find().then(response => res.json(response)).catch((err) => handleError(err, res))
+const getAllUsers = async (req, res) => {
+    try {
+        const user = await userModel.find()
+        res.json(user)
+        handleError(err, res)
+} catch (error) {
+    res.status(500).send(error)
+}
 }
 
-function updateUser(req, res) {
-    userModel
-        .findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true
+const updateUser = async (req, res) => {
+    try {
+        const user = await userModel
+            .findByIdAndUpdate(req.params.id, req.body, {
+                new: true,
+                runValidators: true
+            })
+        res.json(user)
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
+
+const deleteUserById = async (req, res) => {
+    try {
+        const user = await userModel.remove({
+            _id: req.params.id
         })
-        .then(response => res.json(response))
-        .catch((err) => handleError(err, res))
+        res.json(user)
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
-function deleteUserById (req, res) {
-    userModel
-      .remove({ _id: req.params.id })
-      .then(response => res.json(response))
-      .catch(err => handleError(err, res))
-  }
-
-function filterUsersByStore (req, res) {
-    userModel
-    .find({ "store": req.params.id })
-    .then(response => res.json(response))
-    .catch((err) => handleError(err, res))
+const filterUsersByStore = async(req, res) => {
+    try {
+        const user = await userModel
+        .find({
+            "store": req.params.id
+        })
+        res.json(user)
+    } catch (error) {
+        
+    }
+       
 }
 
 
@@ -61,6 +79,6 @@ module.exports = {
     createUser,
     getAllUsers,
     filterUsersByStore,
-    updateUser, 
+    updateUser,
     deleteUserById
 }

@@ -10,7 +10,6 @@ const newProduct = async (req, res) => {
                 colour: req.body.colour
             }
         )
-
         res.json('Your product ' + product.name + ' has been added.')
 
     } catch (error) {
@@ -18,31 +17,44 @@ const newProduct = async (req, res) => {
     }
 }
 
-function getAllProducts(req, res) {
-    productModel.find().then(response => res.json(response)).catch((err) => handleError(err, res))
+const getAllProducts  = async (req, res) => {
+    try {
+        const product = productModel.find()
+        res.json(product)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
+}
+const getProductById = async (req, res) => {
+    try {
+        const product = await productModel.find({ _id: req.params.id })
+        res.json(product)
+        
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
-function getProductById(req, res) {
-    productModel.find({ _id: req.params.id }).then(response => res.json(response)).catch((err) => handleError(err, res))
-}
-
-function updateProduct(req, res) {
-    productModel
+const updateProduct = async (req, res) => {
+    try {
+        const product = await productModel
         .findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
         })
-        .then(response => res.json(response))
-        .catch((err) => handleError(err, res))
+        res.json(product)
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
-function deleteProductById(req, res) {
-    productDeleted = req.params.id
-    productModel
-        .remove({ _id: req.params.id })
-        .then(response => res.json('The Product with ID ' + productDeleted + ' has been deleted.'))
-        .catch(err => handleError(err, res))
+const deleteProductById = async (req, res) => {
+    const productDeleted = req.params.id
+    await productModel.remove({ _id: req.params.id })
+    res.json('The Product with ID ' + productDeleted + ' has been deleted.')
 }
+        
 
 module.exports = {
     newProduct,
