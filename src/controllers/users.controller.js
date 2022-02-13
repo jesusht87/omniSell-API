@@ -56,7 +56,6 @@ function filterUsersByStore (req, res) {
     .catch((err) => handleError(err, res))
 }
 
-
 module.exports = {
     createUser,
     getAllUsers,

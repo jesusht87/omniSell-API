@@ -5,20 +5,9 @@ const createStore = async (req, res) => {
         const store = await storeModel.create(
             {
                 name: req.body.name,
-                location: req.body.location
-                // stock: [
-                //     {
-                //         product: req.body.stock.product,
-                //         amount: req.body.stock.amount
-                //     }
-                // ],
-                // bestSellers: [
-                //     {
-                //         product: req.body.stock.product,
-                //         amount: req.body.stock.amount
-                //     }
-                // ],
-
+                location: req.body.location,
+                stock: req.body.stock,
+                bestSellers: req.body.bestSellers
             }
         )
 
