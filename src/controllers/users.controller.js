@@ -49,11 +49,18 @@ function deleteUserById (req, res) {
       .catch(err => handleError(err, res))
   }
 
+function filterUsersByStore (req, res) {
+    userModel
+    .find({ "store": req.params.id })
+    .then(response => res.json(response))
+    .catch((err) => handleError(err, res))
+}
 
 
 module.exports = {
     createUser,
     getAllUsers,
+    filterUsersByStore,
     updateUser, 
     deleteUserById
 }
