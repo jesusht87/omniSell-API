@@ -27,7 +27,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const user = await userModel.findOne({email: req.body.email})
+        const user = await userModel.findOne({ email: req.body.email })
 
         console.log(req.body.password, user.password)
 
@@ -36,11 +36,11 @@ const login = async (req, res) => {
 
         if (bcrypt.compareSync(req.body.password, user.password)) {
 
-            const data = {user_id: user._id}
-            const token = jwt.sign(data, process.env.SECRET, {expiresIn: 60 * 60})
+            const data = { user_id: user._id }
+            const token = jwt.sign(data, process.env.SECRET, { expiresIn: 60 * 60 })
 
-            res.json({token})
-        } 
+            res.json({ token })
+        }
 
     } catch (error) {
         console.error(error)
@@ -48,8 +48,11 @@ const login = async (req, res) => {
 }
 
 const check = async (req, res) => {
+  
     if(!req.headers.token) return res.status(403).json({error : 'No Token Found'})
+  
     return res.send('User logged in')
+  
 }
 
 module.exports = {

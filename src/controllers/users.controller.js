@@ -74,7 +74,6 @@ const filterUsersByStore = async(req, res) => {
        
 }
 
-
 module.exports = {
     createUser,
     getAllUsers,

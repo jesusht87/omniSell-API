@@ -2,12 +2,15 @@ const storeModel = require('../models/stores.model')
 
 const createStore = async (req, res) => {
     try {
-        const store = await storeModel.create({
-            name: req.body.name,
-            location: req.body.location,
-            stock: req.body.stock,
-            bestSellers: req.body.bestSellers
-        })
+        const store = await storeModel.create(
+            {
+                name: req.body.name,
+                location: req.body.location,
+                stock: req.body.stock,
+                bestSellers: req.body.bestSellers
+            }
+        )
+
         res.json({
             name: store.name,
             location: store.location
