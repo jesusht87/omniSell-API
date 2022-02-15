@@ -24,6 +24,7 @@ const cors = require("cors")
             .use(morgan('combined'))
             .use(express.json())
             .use('/api', apiRouter)
+            .use('/', () => console.log('API working!'))
 
         const PORT = process.env.PORT || 3000
         app.listen(PORT, (err) => {
