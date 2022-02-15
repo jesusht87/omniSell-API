@@ -1,4 +1,5 @@
 const orderModel = require('../models/orders.model')
+const transferModel = require('../models/transfers.model')
 
 const newOrder = async (req, res) => {
     try {
@@ -9,11 +10,25 @@ const newOrder = async (req, res) => {
                 origin: req.body.origin,
                 destination: req.body.destination
             }
-        )
+        ) 
+        
+        var transfer = await transferModel.findOne({origin : order.origin,destination : order.destination}) || null
+        if(transfer === null){
+            transfer = await transferModel.create({
+                origin : order.origin,
+                destination : order.destination,
+                orders : [],
+                status : 'Not Prepared'
+            })
+        }        
 
-        res.json('Congrats! Your order between ' + order.origin + ' and ' + order.destination + ' have been placed.')
+        order.orderContent.forEach(e => {transfer.orders.push(e)})
+        console.log(transfer.orders)
+        await transfer.save()
+        res.send('Congrats! Your order between ' + order.origin + ' and ' + order.destination + ' have been placed.')
 
     } catch (error) {
+        console.log(error)
         res.status(500).send(error)
     }
 }
