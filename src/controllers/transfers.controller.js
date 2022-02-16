@@ -45,7 +45,7 @@ const deliver = async (req, res) => {
 
     })
     transfer.status = 'Delivered'
-    res.send(transfer)
+    res.json(transfer)
 
   } catch (error) {
     console.log(error)
@@ -75,7 +75,7 @@ const receive = async (req, res) => {
 
     })
     transfer.status = 'Received'
-    res.send(transfer)
+    res.json(transfer)
 
   } catch (error) {
     console.log(error)
