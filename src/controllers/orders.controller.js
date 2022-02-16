@@ -22,7 +22,7 @@ const newOrder = async (req, res) => {
             })
         }        
 
-        order.orderContent.forEach(e => {transfer.orders.push(e)})
+        transfer.orders.push(order)
         console.log(transfer.orders)
         await transfer.save()
         res.send('Congrats! Your order between ' + order.origin + ' and ' + order.destination + ' have been placed.')

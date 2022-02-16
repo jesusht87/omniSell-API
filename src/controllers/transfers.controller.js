@@ -24,47 +24,43 @@ const getTransferById = async (req, res) => {
 const deliver = async (req, res) => {
   try {
 
-    const transfer = await transferModel.findById(req.params.id)
-      .populate('orders')
-
+    const transfer = await transferModel.findById(req.params.id).populate('orders')
 
     const store = await storeModel.findById(transfer.origin)
 
     const stockErrors = []
 
     transfer.orders.forEach(order => {
-      order.orderContent.forEach( async(content) => {
+      order.orderContent.forEach(async (content) => {
 
         const [storeProd] = store.stock.filter(s => JSON.stringify(s.product) === JSON.stringify(content.product))
 
         console.log(storeProd.product)
 
-        // if (storeProd.amount < content.amount) {
-        //   stockErrors.push({
-        //     order: order._id,
-        //     msg: `Order amount : ${content.amount}, stock amount : ${storeProd.amount}`
-        //   })
-        // }
-        // else if (storeProd.product === undefined) {
-        //   stockErrors.push({
-        //     order: order._id,
-        //     msg: `${content.product} not available in store`
-        //   })
-        // } else {
-        //   storeProd.amount -= content.amount
-        //   await store.save()
-        // }
+        if (storeProd.amount < content.amount) {
+          stockErrors.push({
+            order: order._id,
+            msg: `Order amount : ${content.amount}, stock amount : ${storeProd.amount}`
+          })
+        }
+        else if (storeProd.product === undefined) {
+          stockErrors.push({
+            order: order._id,
+            msg: `${content.product} not available in store`
+          })
+        } else {
+          storeProd.amount -= content.amount
+          store.save()
+        } 
 
-        //if not, cancel order, send a message, and continue loop
-        
+        //if not, cancel order, send a message, and continue loop 
 
-        
       })
 
     })
     console.log(stockErrors)
-    
-    res.send('Todo bien')
+
+    res.send(transfer)
   } catch (error) {
     res.status(500).send(error)
   }
