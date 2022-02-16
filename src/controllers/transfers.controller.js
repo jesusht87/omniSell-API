@@ -24,53 +24,68 @@ const getTransferById = async (req, res) => {
 const deliver = async (req, res) => {
   try {
 
-    const transfer = await transferModel.findById(req.params.id)
-      .populate('orders')
-
+    const transfer = await transferModel.findById(req.params.id).populate('orders')
 
     const store = await storeModel.findById(transfer.origin)
 
-    const stockErrors = []
+    transfer.orders.forEach(async order => {
+      for (let i = 0; i < order.orderContent.length; i++) {
 
-    transfer.orders.forEach(order => {
-      order.orderContent.forEach( async(content) => {
+        let content = order.orderContent[i]
 
         const [storeProd] = store.stock.filter(s => JSON.stringify(s.product) === JSON.stringify(content.product))
 
-        console.log(storeProd.product)
+        if (storeProd.amount >= content.amount) {
 
-        // if (storeProd.amount < content.amount) {
-        //   stockErrors.push({
-        //     order: order._id,
-        //     msg: `Order amount : ${content.amount}, stock amount : ${storeProd.amount}`
-        //   })
-        // }
-        // else if (storeProd.product === undefined) {
-        //   stockErrors.push({
-        //     order: order._id,
-        //     msg: `${content.product} not available in store`
-        //   })
-        // } else {
-        //   storeProd.amount -= content.amount
-        //   await store.save()
-        // }
+          storeProd.amount -= content.amount
+          await store.save()
 
-        //if not, cancel order, send a message, and continue loop
-        
-
-        
-      })
+        }
+      }
 
     })
-    console.log(stockErrors)
-    
-    res.send('Todo bien')
+    transfer.status = 'Delivered'
+    res.send(transfer)
+
   } catch (error) {
+    console.log(error)
     res.status(500).send(error)
   }
 }
+
+const receive = async (req, res) => {
+  try {
+
+    const transfer = await transferModel.findById(req.params.id).populate('orders')
+
+    const store = await storeModel.findById(transfer.destination)
+
+    transfer.orders.forEach(async order => {
+      for (let i = 0; i < order.orderContent.length; i++) {
+
+        let content = order.orderContent[i]
+
+        const [storeProd] = store.stock.filter(s => JSON.stringify(s.product) === JSON.stringify(content.product))
+
+
+        storeProd.amount += content.amount
+        await store.save()
+
+      }
+
+    })
+    transfer.status = 'Received'
+    res.send(transfer)
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
+}
+
 module.exports = {
   getTransfers,
   getTransferById,
-  deliver
+  deliver,
+  receive
 }

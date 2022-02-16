@@ -3,6 +3,7 @@ const {getTransfers,
        getTransferById,
        deliver,
        receive} = require('../controllers/transfers.controller')
+
 const {checkAuth,
        checkManager} = require('../utils/auth')
 
