@@ -6,6 +6,8 @@ const mongoose = require("mongoose")
 const morgan = require("morgan")
 const cors = require("cors")
 
+const {checkAuth,
+     checkAdmin} = require('./src/utils/auth')
 
 ; (async function () {
     try {
