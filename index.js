@@ -26,7 +26,7 @@ const {checkAuth,
             .use(morgan('combined'))
             .use(express.json())
             .use('/api', apiRouter)
-            .use('/', () => console.log('API working!'))
+            .use('/', () => res.send('API working!'))
 
         const PORT = process.env.PORT
         app.listen(PORT, (err) => {
@@ -44,3 +44,4 @@ const {checkAuth,
 })()
 
 const apiRouter = require('./src/routers/index')
+const res = require('express/lib/response')
