@@ -26,7 +26,7 @@ const {checkAuth,
             .use(morgan('combined'))
             .use(express.json())
             .use('/api', apiRouter)
-            .use('/', () => res.send('API working!'))
+            //.use('/', () => res.send('API working!'))
 
         const PORT = process.env.PORT
         app.listen(PORT, (err) => {
