@@ -11,7 +11,7 @@ const {checkAuth,
 
 ; (async function () {
     try {
-        await mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017', {
+        await mongoose.connect(process.env.MONGO_URL, {
             dbName: process.env.MONGO_DB || 'omniSell'
         })
         console.info('>'.repeat(40))
@@ -28,7 +28,7 @@ const {checkAuth,
             .use('/api', apiRouter)
             .use('/', () => console.log('API working!'))
 
-        const PORT = process.env.PORT || 3000
+        const PORT = process.env.PORT
         app.listen(PORT, (err) => {
             if (err) {
                 throw new Error(err)
