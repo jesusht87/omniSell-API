@@ -4,16 +4,13 @@ const {
     getAllOrders,
     getOrderById,
     updateOrder,
-    deleteOrderById 
-} = require('../controllers/orders.controller')
+    deleteOrderById} = require('../controllers/orders.controller')
+const {checkAuth,
+    checkManager} = require('../utils/auth')
 
-router.post('/', newOrder)
-router.get('/', getAllOrders)
-router.get('/:id', getOrderById)
-router.put('/:id', updateOrder)
-router.delete('/:id', deleteOrderById)
+router.get('/', checkAuth, getAllOrders)
+router.get('/:id', checkAuth, getOrderById)
+router.post('/', checkAuth, checkManager, newOrder)
+router.put('/:id', checkAuth, checkManager, updateOrder)
+router.delete('/:id', checkAuth, checkManager, deleteOrderById)
 module.exports = router 
-
-
-
-

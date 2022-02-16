@@ -6,10 +6,13 @@ const {
     deleteUserById, 
     filterUsersByStore
 } = require('../controllers/users.controller')
+const {checkAuth,
+       checkAdmin,
+       checkManager} = require('../utils/auth')
 
-router.post('/', createUser)
-router.get('/', getAllUsers)
-router.get('/:id', filterUsersByStore)  // Get all users and apply filter by the store ID given in the request
-router.put('/:id', updateUser)
-router.delete('/:id', deleteUserById)
+router.get('/', checkAuth, checkAdmin, getAllUsers)
+router.get('/:id', checkAuth, checkManager, filterUsersByStore)  
+router.post('/', checkAuth, checkAdmin, createUser)
+router.put('/:id', checkAuth, checkAdmin, updateUser)
+router.delete('/:id', checkAuth, checkAdmin, deleteUserById)
 module.exports = router 

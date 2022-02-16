@@ -29,8 +29,6 @@ const login = async (req, res) => {
     try {
         const user = await userModel.findOne({ email: req.body.email })
 
-        console.log(req.body.password, user.password)
-
         if (!user) return res.json({ error: 'user/password not found' }) //If user doesn't exist, send error
 
 

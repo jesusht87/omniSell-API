@@ -4,11 +4,13 @@ const {getTransfers,
        deliver,
        receive} = require('../controllers/transfers.controller')
 
+const {checkAuth,
+       checkManager} = require('../utils/auth')
 
-router.get('/', getTransfers)
-router.get('/:id', getTransferById)
-router.put('/deliver/:id', deliver)
-router.put('/receive/:id', receive)
+router.get('/', checkAuth, checkManager, getTransfers)
+router.get('/:id', checkAuth, checkManager, getTransferById)
+router.put('/deliver/:id', checkAuth, checkManager, deliver)
+router.put('/receive/:id', checkAuth, checkManager, receive)
 
 
 module.exports = router
