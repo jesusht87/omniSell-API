@@ -19,7 +19,7 @@ const newProduct = async (req, res) => {
 
 const getAllProducts  = async (req, res) => {
     try {
-        const product = productModel.find()
+        const product = await productModel.find()
         res.json(product)
     } catch (error) {
         res.status(500).send(error)

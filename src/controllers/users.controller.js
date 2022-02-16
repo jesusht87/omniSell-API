@@ -29,7 +29,7 @@ const getAllUsers = async (req, res) => {
     try {
         const user = await userModel.find()
         res.json(user)
-        handleError(err, res)
+        
 } catch (error) {
     res.status(500).send(error)
 }
